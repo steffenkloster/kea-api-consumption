@@ -15,16 +15,12 @@ let currentPage = 0;
 let currentApiPage = 1;
 
 // https://stackoverflow.com/a/19690464/17904373
-const isRetinaDisplay = () => {
-  if (window.matchMedia) {
-    var mq = window.matchMedia(
-      "only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)"
-    );
-    return (mq && mq.matches) || window.devicePixelRatio > 1;
-  }
-
-  return false;
-};
+const isRetinaDisplay = (() => {
+  const retinaQuery = window.matchMedia(
+    "only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)"
+  );
+  return retinaQuery.matches || window.devicePixelRatio > 1;
+})();
 
 const options = (method) => {
   return {
@@ -177,62 +173,65 @@ const getMovies = async (clear = false) => {
       movies.push(...data.results);
 
       data.results.forEach((movie) => {
+        const {
+          backdrop_path,
+          poster_path,
+          title,
+          release_date,
+          overview,
+          original_title,
+          vote_count,
+          vote_average,
+          genre_ids
+        } = movie;
+
         const newMovie = document.importNode(
           document.getElementById("movie-row").content,
           true
         );
-
         const movieArticle = newMovie.querySelector("article");
+
         movieArticle.addEventListener("mouseenter", () =>
           changeBackgroundImage(
-            `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`
+            `https://image.tmdb.org/t/p/w1280${backdrop_path}`
           )
         );
-
         movieArticle.addEventListener("mouseleave", () =>
           changeBackgroundImage("")
         );
 
-        const moviePoster = newMovie.querySelector(".poster");
-        const movieTitle = newMovie.querySelector(".title");
-        const movieTitle2 = newMovie.querySelector(".title2");
-        const movieOverview = newMovie.querySelector(".overview");
-        const movieOriginalTitle = newMovie.querySelector(".original-title");
-        const movieReleaseDate = newMovie.querySelector(".release-date");
-        const movieVotes = newMovie.querySelector(".votes");
+        newMovie.querySelector(".poster").src = `https://image.tmdb.org/t/p/${
+          isRetinaDisplay ? "w400" : "w200"
+        }${poster_path}`;
+
+        newMovie.querySelector(".poster").alt = `${title} poster`;
+        newMovie.querySelector(
+          ".title"
+        ).textContent = `${title} (${release_date.slice(0, 4)})`;
+
+        newMovie.querySelector(".title2").textContent = title;
+        newMovie.querySelector(".overview").textContent = overview;
+        newMovie.querySelector(".original-title").textContent = original_title;
+        newMovie.querySelector(".release-date").textContent = release_date;
+        newMovie.querySelector(
+          ".votes"
+        ).textContent = `${vote_count} user votes`;
+
         const movieGenres = newMovie.querySelector(".genres");
-
-        moviePoster.src = `https://image.tmdb.org/t/p/${
-          isRetinaDisplay() ? "w400" : "w200"
-        }${movie.poster_path}`;
-        moviePoster.alt = `${movie.title} poster`;
-        movieTitle.childNodes[0].nodeValue = `${movie.title} `;
-        movieTitle.childNodes[1].innerText = `(${movie.release_date.slice(
-          0,
-          4
-        )})`;
-
-        movieTitle2.textContent = movie.title;
-        movieOverview.textContent = movie.overview;
-        movieOriginalTitle.textContent = movie.original_title;
-        movieReleaseDate.textContent = movie.release_date;
-        movieVotes.textContent = `${movie.vote_count} user votes`;
-
-        movieGenres.innerHTML = movie.genre_ids
+        movieGenres.innerHTML = genre_ids
           .map(
-            (genreId) =>
-              genres.find((genre) => genre.id === genreId)?.name ?? "Unknown"
+            (id) => genres.find((genre) => genre.id === id)?.name || "Unknown"
           )
           .map((genre) => `<li>${genre}</li>`)
           .join("");
 
-        const userRating = Number(movie.vote_average / 2).toFixed(1);
         const movieRating = newMovie.querySelector(".rating");
+        const userRating = Number(vote_average / 2).toFixed(1);
         movieRating.value = userRating;
         movieRating.title = `${userRating} stars`;
         movieRating.querySelector(
           "span"
-        ).textContent = `${userRating}/5 star user rating from ${movie.vote_count} votes`;
+        ).textContent = `${userRating}/5 star user rating from ${vote_count} votes`;
 
         moviesContainer.appendChild(newMovie);
       });

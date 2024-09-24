@@ -1,2 +1,1 @@
-export const authKey =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMDQ5ODcwNjIwOTUyZmYyNzQzMzM2ODE1ZTEyNGFjZiIsIm5iZiI6MTcyNjg1NjkxNC45OTA5ODMsInN1YiI6IjY2ZWRiYWM1YzZhNjY5ZDYyYWJkZmE1YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GpoZhlJ9E93JTXdwjj9JYad9HZvRJ-iNhIYe49w2vNg";
+export const authKey = "INSERT_API_KEY";

@@ -43,7 +43,7 @@ const switchPage = (page) => {
   currentPage = page;
   currentApiPage = 1;
   movies.length = 0;
-  spinner.classList.remove("hidden");
+  spinner.classList.add("visible");
   getMovies(true);
 };
 
@@ -81,7 +81,7 @@ const changeBackgroundImage = (url) => {
   }
 
   if (url === "") {
-    backgroundImage.classList.remove("!opacity-100");
+    backgroundImage.classList.remove("visible");
 
     resetTimeout = setTimeout(() => {
       imageLoaded = false;
@@ -96,12 +96,12 @@ const changeBackgroundImage = (url) => {
 
     img.onload = () => {
       backgroundImage.style.backgroundImage = `url(${url})`;
-      backgroundImage.classList.add("!opacity-100");
+      backgroundImage.classList.add("visible");
       currentBackground = url;
       imageLoaded = true;
     };
   } else {
-    backgroundImage.classList.remove("!opacity-100");
+    backgroundImage.classList.remove("visible");
 
     backgroundChangeTimeout = setTimeout(() => {
       const img = new Image();
@@ -109,7 +109,7 @@ const changeBackgroundImage = (url) => {
 
       img.onload = () => {
         backgroundImage.style.backgroundImage = `url(${url})`;
-        backgroundImage.classList.add("!opacity-100");
+        backgroundImage.classList.add("visible");
         currentBackground = url;
         imageLoaded = true;
       };
@@ -128,7 +128,7 @@ const handleApiError = async (response) => {
   errorElement.querySelector(".error-message").textContent =
     json.status_message;
   errorElement.classList.remove("hidden");
-  spinner.classList.add("hidden");
+  spinner.classList.remove("visible");
 };
 
 let loading = false;
@@ -158,7 +158,7 @@ const getMovies = async (clear = false) => {
   }
 
   if (currentApiPage > MAXIMUM_API_PAGES) {
-    spinner.classList.add("hidden");
+    spinner.classList.remove("visible");
     return;
   }
 

@@ -1,6 +1,3 @@
-node_modules
-assets/css/output.css
-package-lock.json
 apikey.txt
 api.php
 .DS_Store

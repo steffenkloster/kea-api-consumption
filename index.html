@@ -4,26 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TMDb API Consumption</title>
-    <link rel="stylesheet" href="assets/css/output.css" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <script src="assets/js/index.js" type="module" defer></script>
   </head>
-  <body class="flex flex-col">
-    <div
-      class="fixed -z-10 scale-105 blur-sm w-screen h-screen top-0 left-0 opacity-0 duration-500 transition-opacity bg-no-repeat bg-center bg-cover"
-      id="background-image"
-      aria-hidden="true"
-    ></div>
+  <body>
+    <div id="background-image" aria-hidden="true"></div>
 
-    <header class="top-0 sticky z-10 shadow-lg">
-      <div class="bg-primary px-6">
-        <div class="max-w-screen-md mx-auto">
+    <header>
+      <div class="bg-primary padding-x">
+        <div class="boxed">
           <h1 class="text-white py-3 text-4xl">TMDb API</h1>
         </div>
       </div>
 
-      <nav class="bg-secondary px-6">
-        <div class="max-w-screen-md mx-auto">
-          <ul class="flex flex-wrap gap-x-6 text-white py-1">
+      <nav class="bg-secondary padding-x">
+        <div class="boxed">
+          <ul>
             <li><a class="active" href="#" page="0">Now Playing</a></li>
             <li><a href="#" page="1">Popular</a></li>
             <li><a href="#" page="2">Top Rated</a></li>
@@ -33,14 +30,13 @@
       </nav>
     </header>
 
-    <main class="p-6 relative flex-grow">
-      <div class="max-w-screen-md mx-auto flex flex-col gap-6">
-        <section id="movies" class="flex flex-col gap-6"></section>
+    <main>
+      <div class="boxed">
+        <section id="movies"></section>
 
-        <div class="flex justify-center" id="spinner">
+        <div class="visible" id="spinner">
           <svg
             aria-hidden="true"
-            class="w-8 h-8 text-gray-200 animate-spin dark:text-white fill-secondary"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -57,27 +53,23 @@
           <span class="sr-only">Loading...</span>
         </div>
 
-        <div class="glass red p-6 hidden" id="error">
-          <div
-            class="flex flex-col sm:flex-row justify-between sm:items-center gap-6"
-          >
+        <div class="glass red padding hidden" id="error">
+          <div class="flex-column gap">
             <div>
               <p class="error-title font-bold"></p>
               <p class="error-message"></p>
             </div>
             <a href="javascript:window.location.reload(true)">
-              <button class="h-fit w-full sm:w-fit" type="button">
-                Reload page
-              </button>
+              <button type="button">Reload page</button>
             </a>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="bg-primary px-6">
-      <div class="max-w-screen-md mx-auto py-6 text-white">
-        <p class="text-center mb-2">© 2024 — Steffen Andreas Kloster</p>
+    <footer class="bg-primary padding-x">
+      <div class="boxed padding-y">
+        <p>© 2024 — Steffen Andreas Kloster</p>
         <div class="flex justify-center gap-2">
           <a
             href="https://github.com/steffenkloster/kea-api-consumption"
@@ -120,39 +112,30 @@
     </footer>
 
     <template id="movie-row">
-      <article>
-        <div class="glass white p-6 mt-6">
-          <p
-            class="title2 hidden sm:block uppercase text-4xl md:text-5xl font-black mb-4 -mt-11 md:-mt-12 text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,0.25)]"
-            aria-hidden="true"
-          ></p>
-          <div class="flex flex-col items-center sm:items-start sm:flex-row">
-            <img alt="" class="w-52 rounded-lg mb-4 sm:mb-0 sm:mr-4 poster" />
+      <article class="movie">
+        <div class="glass white padding">
+          <p class="title2" aria-hidden="true"></p>
+          <div class="flex-column">
+            <img alt="" class="poster" />
             <div>
-              <h2 class="text-2xl font-extrabold text-primary title mb-1">
-                Title <span class="text-base font-medium"></span>
-              </h2>
-              <div class="mb-4 flex items-center">
+              <h2 class="text-primary title">Title <span>(year)</span></h2>
+              <div class="rating-container">
                 <meter class="rating" min="0" max="5">
                   <span></span>
                 </meter>
-                <p class="votes text-xs ml-2 text-gray-600"></p>
+                <p class="votes"></p>
               </div>
-              <div class="flex flex-col gap-2">
-                <p class="text-gray-800 leading-relaxed overview"></p>
+              <div class="content">
+                <p class="overview"></p>
                 <ul class="genres"></ul>
                 <div>
-                  <p class="text-black">
-                    <strong class="text-gray-600 font-semibold">
-                      Original title:
-                    </strong>
-                    <span class="original-title text-gray-700"></span>
+                  <p>
+                    <strong class="">Original title: </strong>
+                    <span class="original-title"></span>
                   </p>
-                  <p class="text-black">
-                    <strong class="text-gray-600 font-semibold">
-                      Release date:
-                    </strong>
-                    <span class="release-date text-gray-700"></span>
+                  <p>
+                    <strong>Release date: </strong>
+                    <span class="release-date"></span>
                   </p>
                 </div>
               </div>
